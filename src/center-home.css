@@ -1,0 +1,2 @@
+.login-content { position: absolute; top: 50%; left: 50%; width: min(470px, calc(100% - 36px)); margin: 0; transform: translate(-50%, -50%); }.login-content.reveal { animation: center-reveal .7s ease both; }.login-form { margin-left: auto; margin-right: auto; } @keyframes center-reveal { from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)); } to { opacity: 1; transform: translate(-50%, -50%); } }
+@media (max-width: 760px) { .login-content { width: calc(100% - 36px); top: 48%; }.login-content h1 { text-align: center; }.login-form { width: min(370px, 100%); } }

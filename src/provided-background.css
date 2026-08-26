@@ -1,0 +1,8 @@
+.app-shell, .login-shell { background: #05030d; }
+.app-shell:before, .login-shell:before { background: linear-gradient(90deg, #05030d66, #05030d22 46%, #05030d55), url('./assets/neon-playroom.png') center / cover no-repeat; opacity: 1; filter: saturate(1.12) contrast(1.04); animation: background-pulse 12s ease-in-out infinite alternate; }
+.app-shell:after, .login-shell:after { background: linear-gradient(180deg, #03030a88, transparent 24%, #03030a44 74%, #03030acc), linear-gradient(90deg, #ff168f1c, transparent 42%, #155dff22); opacity: 1; }
+.grid-lines { opacity: .07; }
+.login-content, .topbar, .schedule-page, .admin-view, .player-view, .quick-section { text-shadow: 0 2px 16px #000; }
+.pc-card, .panel, .booking-menu, .role-switch { background-color: #080916bb; backdrop-filter: blur(12px); }
+@keyframes background-pulse { from { transform: scale(1); } to { transform: scale(1.035); } }
+@media (prefers-reduced-motion: reduce) { .app-shell:before, .login-shell:before { animation: none; } }

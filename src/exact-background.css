@@ -1,0 +1,9 @@
+.app-shell, .login-shell { background: #05030d; }
+.app-shell:before, .login-shell:before { content: ''; position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -2; pointer-events: none; background-image: url('./assets/neon-playroom.png'); background-position: center center; background-size: 100% 100%; background-repeat: no-repeat; opacity: 1; filter: saturate(1.12) contrast(1.04); animation: image-drift 18s ease-in-out infinite alternate; }
+.app-shell:after, .login-shell:after { content: ''; position: fixed; inset: 0; z-index: -1; pointer-events: none; background: linear-gradient(90deg, #02030a55, transparent 48%, #02030a44), linear-gradient(180deg, #02030a33, transparent 35%, #02030a55); opacity: 1; }
+.grid-lines, .fluid-orb, .fluid-flow { display: none; }
+.login-content h1 { font-family: 'Trebuchet MS', sans-serif; font-style: normal; font-weight: 800; font-size: clamp(42px, 6vw, 86px); letter-spacing: 0; line-height: 1; white-space: nowrap; }
+.login-form { margin-top: 30px; }
+@keyframes image-drift { 0% { transform: scale(1); } 100% { transform: scale(1.04); } }
+@media (max-width: 760px) { .login-content h1 { font-size: clamp(38px, 12vw, 64px); }.login-form { margin-top: 24px; }.app-shell:before, .login-shell:before { width: 100vw; height: 100svh; } }
+@media (prefers-reduced-motion: reduce) { .app-shell:before, .login-shell:before { animation: none; } }

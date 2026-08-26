@@ -1,0 +1,3 @@
+html, body, #root { background: #05060b !important; }
+.app-shell, .login-shell { background: #05060b !important; }
+.app-shell:before, .app-shell:after, .login-shell:before, .login-shell:after, .grid-lines, .ambient, .fluid-orb, .fluid-flow { display: none !important; }
