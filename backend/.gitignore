@@ -5,6 +5,7 @@ target/
 .vscode/
 .DS_Store
 
-# Local secrets - never commit real SMTP credentials
-run-local.ps1
+# .env.local: still gitignored for genuinely personal/per-machine overrides.
+# run-local.ps1 is intentionally NOT ignored - it holds the team's shared
+# OTP-sender Gmail credentials (cafeotp.noreply@gmail.com), committed on purpose.
 .env.local
