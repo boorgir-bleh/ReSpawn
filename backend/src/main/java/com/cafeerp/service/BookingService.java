@@ -3,6 +3,7 @@ package com.cafeerp.service;
 import com.cafeerp.dto.booking.BookingCreatedResponse;
 import com.cafeerp.dto.booking.BookingRequest;
 import com.cafeerp.dto.booking.BookingResponse;
+import com.cafeerp.dto.pc.BusySlotResponse;
 import com.cafeerp.entity.Booking;
 import com.cafeerp.entity.BookingStatus;
 import com.cafeerp.entity.PaymentMode;
@@ -23,6 +24,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Service
@@ -92,6 +95,22 @@ public class BookingService {
         }
 
         return new BookingCreatedResponse(BookingResponse.from(booking), qrBase64, upiLink);
+    }
+
+    /**
+     * Public read model backing the mobile app's hour-grid: which time ranges on this PC are
+     * already reserved for the given day. Interpreted in UTC, consistent with how every other
+     * timestamp in this service is handled (no per-cafe timezone concept exists yet).
+     */
+    public List<BusySlotResponse> listBusySlots(Long pcStationId, LocalDate date) {
+        pcStationService.findEntity(pcStationId);
+
+        Instant dayStart = date.atStartOfDay(ZoneOffset.UTC).toInstant();
+        Instant dayEnd = date.plusDays(1).atStartOfDay(ZoneOffset.UTC).toInstant();
+
+        return bookingRepository.findOverlappingBookings(pcStationId, dayStart, dayEnd, ACTIVE_STATUSES).stream()
+                .map(b -> new BusySlotResponse(b.getStartTime(), b.getEndTime()))
+                .toList();
     }
 
     public List<BookingResponse> listMyBookings(Long userId) {

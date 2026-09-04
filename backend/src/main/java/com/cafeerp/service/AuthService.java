@@ -36,27 +36,36 @@ public class AuthService {
             throw new ConflictException("An account with this email already exists");
         }
 
+        // Starts disabled: OTP verification (once, right after registration) is what flips this
+        // to true. Spring Security's DaoAuthenticationProvider refuses to authenticate a disabled
+        // account, so an unverified signup can't be used to log in by just knowing the password.
         User user = User.builder()
                 .fullName(request.fullName())
                 .email(request.email())
                 .phoneNumber(request.phoneNumber())
                 .passwordHash(passwordEncoder.encode(request.password()))
                 .role(Role.USER)
-                .enabled(true)
+                .enabled(false)
                 .build();
 
         user = userRepository.save(user);
         return otpService.issueOtp(user);
     }
 
-    public OtpChallengeResponse login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
+        // Throws DisabledException (mapped to a clear 401) if the account never completed the
+        // registration OTP step - see the comment in register(). Otherwise this is a normal
+        // password login: no OTP required.
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.email(), request.password()));
 
         User user = userRepository.findByEmailIgnoreCase(request.email())
                 .orElseThrow(() -> new IllegalStateException("User vanished after successful authentication"));
 
-        return otpService.issueOtp(user);
+        UserPrincipal principal = new UserPrincipal(user);
+        String token = jwtService.generateToken(principal);
+
+        return AuthResponse.bearer(token, user.getId(), user.getFullName(), user.getEmail(), user.getRole().name());
     }
 
     @Transactional
@@ -65,6 +74,10 @@ public class AuthService {
                 .orElseThrow(() -> new BadRequestException("Invalid or expired verification code"));
 
         otpService.verifyOtp(user, request.code());
+
+        if (!user.isEnabled()) {
+            user.setEnabled(true);
+        }
 
         UserPrincipal principal = new UserPrincipal(user);
         String token = jwtService.generateToken(principal);

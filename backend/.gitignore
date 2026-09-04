@@ -4,3 +4,7 @@ target/
 *.iml
 .vscode/
 .DS_Store
+
+# Local secrets - never commit real SMTP credentials
+run-local.ps1
+.env.local

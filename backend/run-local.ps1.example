@@ -1,0 +1,14 @@
+# Copy this file to run-local.ps1 (gitignored - never commit real credentials)
+# and fill in the values below, then run: .\run-local.ps1
+
+$env:SMTP_HOST = "smtp.gmail.com"
+$env:SMTP_PORT = "587"
+$env:SMTP_USERNAME = "your-gmail-address@gmail.com"
+$env:SMTP_PASSWORD = "your-16-char-app-password"   # from myaccount.google.com/apppasswords, spaces removed
+$env:MAIL_FROM_ADDRESS = "your-gmail-address@gmail.com"
+
+$env:JAVA_HOME = "C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot"
+$env:MAVEN_HOME = "C:\tools\apache-maven-3.9.16"
+$env:Path = "$env:JAVA_HOME\bin;$env:MAVEN_HOME\bin;$env:Path"
+
+mvn spring-boot:run
